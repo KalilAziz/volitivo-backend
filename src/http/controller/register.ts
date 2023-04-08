@@ -5,7 +5,8 @@ import { z } from 'zod'
 
 // importando a tipagem do fastify
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { registerUserServices } from '@/services/register'
+import { RegisterUserServices } from '@/services/register'
+import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 
 // Os controlers são responsáveis por receber as requisições e devolver as respostas. em vez de deixar toda a parte de criação de usuário no arquivo src/app.ts, deixando mais "limpo"
 
@@ -23,21 +24,23 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   const { name, email, password } = await registerBodySchema.parse(request.body)
 
   try {
-    // Agora iremos usar o service que criamos para criar o usuário
-    await registerUserServices({
+    const prismaUsersRepository = new PrismaUsersRepository()
+    const registerUserServices = new RegisterUserServices(prismaUsersRepository)
+
+    await registerUserServices.execute({
       name,
       email,
       password,
     })
   } catch (error) {
-    // Caso o usuário já exista, iremos retornar uma resposta para o usuário. Para isso, iremos utilizar o método status() do fastify, passando o código 409, que é o código de erro para quando o usuário já existe. E iremos retornar uma mensagem de erro
+    // Caso ocorra algum erro, iremos retornar uma resposta para o usuário
     return reply.status(409).send({
       message: 'User already exists',
     })
   }
 
   // Retornando uma resposta para o usuário
-  reply.send({
+  reply.status(201).send({
     message: 'User created successfully',
     // Não conseguimos retornar o usuário, pois nosso service está dentro de um try/catch.
     // user,
