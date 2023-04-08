@@ -2,6 +2,7 @@
 
 // Importando o prisma client
 import { prisma } from '@/lib/prisma'
+import { PrismaUsersRepository } from '@/repositories/prisma-users-repository'
 // Iremos agora começar a fazer o hash de senha do usuário. Para isso, iremos utilizar o bcryptjs
 import bcrypt from 'bcryptjs'
 
@@ -43,12 +44,20 @@ export const registerUserServices = async ({
 
   // Caso o usuário não exista, iremos criar um novo usuário no banco de dados
 
-  const user = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password_hash,
-    },
+  // const user = await prisma.user.create({
+  //   data: {
+  //     name,
+  //     email,
+  //     password_hash,
+  //   },
+  // })
+
+  // Agora, em vez de criar o usuário por nosso método create, iremos usar nosso repository
+  const prismaUsersRepository = new PrismaUsersRepository()
+  const user = await prismaUsersRepository.create({
+    name,
+    email,
+    password_hash,
   })
 
   // Agora, iremos retornar o usuário criado, Iremos retornar dentro de um objeto, pois assim, podemos retornar mais de uma coisa, caso seja necessário.
