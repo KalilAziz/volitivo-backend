@@ -9,3 +9,77 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Permission {
+  USER_EDITOR
+  USER_VIEWER
+  USER_DELETER
+}
+
+model User {
+  id    String @id @default(cuid())
+  name  String
+  email String @unique
+  role  Role   @default(USER)
+  permissions Permission[] @default([])
+
+  created_at DateTime @default(now())
+
+  questions Question[]
+  exams QuestionExamUser[]
+}
+
+model Question {
+  id    String @id @default(cuid())
+  code  String @unique
+  body  String
+  alternative_a String
+  alternative_b String
+  alternative_c String
+  alternative_d String
+  alternative_e String
+  correct_alternative String
+  image String?
+  explanation String?
+  year String
+  created_at DateTime @default(now())
+  user User @relation(fields: [user_id], references: [id])
+  bank QuestionBank @relation(fields: [bank_id], references: [id])
+  exam QuestionExam @relation(fields: [exam_id], references: [id])
+
+  user_id String
+  bank_id String
+  exam_id String
+}
+
+model QuestionBank {
+  id    String @id @default(cuid())
+  name  String
+  created_at DateTime @default(now())
+
+  questions Question[]
+}
+
+model QuestionExam {
+  id    String @id @default(cuid())
+  name  String
+  created_at DateTime @default(now())
+
+  questions Question[]
+  exams QuestionExamUser[]
+}
+
+model QuestionExamUser {
+  id    String @id @default(cuid())
+  created_at DateTime @default(now())
+  user User @relation(fields: [user_id], references: [id])
+  exam QuestionExam @relation(fields: [exam_id], references: [id])
+
+  user_id String
+  exam_id String
+}
