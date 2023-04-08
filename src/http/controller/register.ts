@@ -46,10 +46,12 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       })
     }
 
-    // Caso o erro não seja do tipo UserAlreadyExistsError, iremos retornar uma resposta para o usuário
-    return reply.status(500).send({
-      message: 'Internal server error',
-    })
+    // Ainda não fica 100%, pois pode ocorrer algum erro que não é do tipo UserAlreadyExistsError, e não será tratado. Para isso, iremos lançar o erro novamente, para que ele seja tratado pelo fastify
+    // return reply.status(500).send({
+    //   message: 'Internal server error',
+    // })
+
+    throw error
   }
 
   // Retornando uma resposta para o usuário
