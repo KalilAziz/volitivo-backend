@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  api-solid-volitivo: # nome do sevicço = nome do comteiner
+    image: bitnami/postgresql:latest # imagem do container
+    environment: # variaveis de ambiente
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=apisolid
+    ports: # porta do container
+      - 5432:5432
