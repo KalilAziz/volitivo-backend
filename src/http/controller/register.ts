@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { RegisterUserServices } from '@/services/register'
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
+import { UserAlreadyExistsError } from '@/services/errors/user-already-exists-error'
 
 // Os controlers são responsáveis por receber as requisições e devolver as respostas. em vez de deixar toda a parte de criação de usuário no arquivo src/app.ts, deixando mais "limpo"
 
@@ -34,8 +35,20 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     })
   } catch (error) {
     // Caso ocorra algum erro, iremos retornar uma resposta para o usuário
-    return reply.status(409).send({
-      message: 'User already exists',
+    // return reply.status(409).send({
+    //   message: 'User already exists',
+    // })
+
+    // Iremos agora verificar se o erro é do tipo UserAlreadyExistsError, para que possamos retornar uma resposta para o usuário
+    if (error instanceof UserAlreadyExistsError) {
+      return reply.status(409).send({
+        message: 'User already exists',
+      })
+    }
+
+    // Caso o erro não seja do tipo UserAlreadyExistsError, iremos retornar uma resposta para o usuário
+    return reply.status(500).send({
+      message: 'Internal server error',
     })
   }
 

@@ -3,6 +3,7 @@
 import { UsersRepositoryInterface } from '@/repositories/users-repository-interface'
 // Iremos agora começar a fazer o hash de senha do usuário. Para isso, iremos utilizar o bcryptjs
 import bcrypt from 'bcryptjs'
+import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
 // Iremos criar uma função que irá receber o nome, email e senha do usuário, e irá retornar o usuário criado
 
@@ -26,7 +27,8 @@ export class RegisterUserServices {
 
     // Caso o usuário já exista, iremos lançar um erro
     if (userAlreadyExists) {
-      throw new Error('User already exists')
+      // Apenas importar nosso error
+      throw new UserAlreadyExistsError()
     }
 
     // Caso o usuário não exista, iremos criar o usuário
