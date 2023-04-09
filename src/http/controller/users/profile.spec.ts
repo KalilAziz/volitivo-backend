@@ -27,4 +27,13 @@ describe('Profile (e2e)', () => {
       })
     )
   })
+
+  it('should not be able to get user profile without token', async () => {
+    const profileResponse = await request(app.server).get('/me').send()
+
+    expect(profileResponse.status).toEqual(401)
+    expect(profileResponse.body).toEqual({
+      message: 'Unauthorized',
+    })
+  })
 })
