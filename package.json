@@ -14,7 +14,9 @@
     "prisma:studio": "prisma studio",
     "prisma:migrate:dev": "prisma migrate dev",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +26,8 @@
     "@types/node": "18.15.11",
     "@typescript-eslint/eslint-plugin": "5.57.1",
     "@typescript-eslint/parser": "5.57.1",
+    "@vitest/coverage-c8": "0.29.8",
+    "@vitest/ui": "0.29.8",
     "eslint": "8.38.0",
     "prettier": "2.8.7",
     "prisma": "4.12.0",

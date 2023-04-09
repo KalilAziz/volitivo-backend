@@ -6,7 +6,7 @@ Back-end volitivo
 
 - [] Deve ser possível...
 - [x] Deve ser possível se cadastrar
-- [] Deve ser possível se autenticar
+- [x] Deve ser possível se autenticar
 - [] Deve ser possível obter o perfil do usuário logado;
 - [] Dve ser possível obter as perguntas
 - [] Deve ser possível cadastrar uma uma banca;

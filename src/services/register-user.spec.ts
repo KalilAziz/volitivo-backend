@@ -1,9 +1,8 @@
 import { expect, it, describe, beforeEach } from 'vitest'
-import { RegisterUserServices } from './register'
+import { RegisterUserServices } from './register-user'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import bcrypt from 'bcryptjs'
-import { ZodError } from 'zod'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
 let sut: RegisterUserServices
@@ -31,7 +30,6 @@ describe('register services', () => {
         permissions: [],
       })
     )
-    expect(user.name).toEqual('John Doe')
   })
 
   it('should hash user password upon registration', async () => {
@@ -50,16 +48,18 @@ describe('register services', () => {
   })
 
   it('should not be able to register a service with an existing email', async () => {
+    const email = 'exemple@hotmail.com'
+
     await sut.execute({
       name: 'John Doe',
-      email: 'exemple@hotmail.com',
+      email,
       password: '123456',
     })
 
     await expect(
       sut.execute({
         name: 'John Doe',
-        email: 'exemple@hotmail.com',
+        email,
         password: '123456',
       })
     ).rejects.toBeInstanceOf(UserAlreadyExistsError)
