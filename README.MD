@@ -5,7 +5,7 @@ Back-end volitivo
 ## Rfs (Requisitos Funcionais) - Funcionalidades da aplicação
 
 - [] Deve ser possível...
-- [] Deve ser possível se cadastrar
+- [x] Deve ser possível se cadastrar
 - [] Deve ser possível se autenticar
 - [] Deve ser possível obter o perfil do usuário logado;
 - [] Dve ser possível obter as perguntas
@@ -25,11 +25,10 @@ Back-end volitivo
 - [] Deve ser possível apenas o usuário com roles ADMIN cadastrar uma questão;
 - [] Deve ser possível apenas o usuário com roles ADMIN cadastrar questões em lote
   (importar de um arquivo CSV);
-- [] Deve ser possível apenas o usuário com roles ADMIN e com permission
 
 ## RNr (Regras de negócio) - Caminhos que cada funcionalidade pode seguir
 
-- [] O usuário não deve poder se cadastrar com um e-mail já existente;
+- [x] O usuário não deve poder se cadastrar com um e-mail já existente;
 - [] O usuário não deve poder responder uma questão que já foi respondida;
 - [] A questão deve ter um número de identificação único (Código da questão) além do ID
 - [] Ao importar um arquivo CSV, o sistema deve verificar se o arquivo está no formato

@@ -12,7 +12,9 @@
     "docker:compose:stop": "docker-compose stop",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
-    "prisma:migrate:dev": "prisma migrate dev"
+    "prisma:migrate:dev": "prisma migrate dev",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +29,9 @@
     "prisma": "4.12.0",
     "tsup": "6.7.0",
     "tsx": "3.12.6",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "vite-tsconfig-paths": "4.0.8",
+    "vitest": "0.29.8"
   },
   "dependencies": {
     "@prisma/client": "4.12.0",
