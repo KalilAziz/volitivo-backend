@@ -3,7 +3,6 @@
 import Request from 'supertest'
 import { app } from '@/app'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { prisma } from '@/lib/prisma'
 
 describe('Authenticate (e2e)', () => {
   beforeAll(async () => {

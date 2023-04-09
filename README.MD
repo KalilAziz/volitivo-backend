@@ -4,11 +4,11 @@ Back-end volitivo
 
 ## Rfs (Requisitos Funcionais) - Funcionalidades da aplicação
 
-- [] Deve ser possível...
+- [x] Deve ser possível...
 - [x] Deve ser possível se cadastrar
 - [x] Deve ser possível se autenticar
-- [] Deve ser possível obter o perfil do usuário logado;
-- [] Dve ser possível obter as perguntas
+- [x] Deve ser possível obter o perfil do usuário logado;
+- [] Deve ser possível obter as perguntas
 - [] Deve ser possível cadastrar uma uma banca;
 - [] Deve ser possível cadastrar um orgão;
 - [] Deve ser possível cadastrar uma prova
@@ -44,8 +44,10 @@ Back-end volitivo
 
 ## Rnrs (Requisitos Não Funcionais) - Requisitos técnicos que não afetam a funcionalidade da aplicação
 
-- [] ...
-
+- [x] A senha do usuário precisa estar criptografada;
+- [x] Os dados da aplicação precisam estar persistidos em um banco PostgreSQL;
+- [x] Todas listas de dados precisam estar paginadas com 20 itens por página;
+- [x] O usuário deve ser identificado por um JWT (JSON Web Token);
 ## Rules
 
 - ADMIN
