@@ -27,8 +27,7 @@ model User {
   email String @unique
   password_hash String
   role  Role   @default(USER)
-  permissions Permission[] @default([USER_EDITOR, USER_VIEWER])
-
+  permissions Permission[] 
   created_at DateTime @default(now())
 
   questions Question[]
