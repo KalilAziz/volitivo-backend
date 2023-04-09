@@ -4,7 +4,7 @@ import { FastifyReply, FastifyRequest } from 'fastify'
 import { UserAlreadyExistsError } from '@/services/errors/user-already-exists-error'
 import { makeRegisterUserServices } from '@/services/factories/make-register-user-services'
 
-export const registerUser = async (
+export const register = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
