@@ -31,7 +31,26 @@ model User {
   created_at DateTime @default(now())
 
   questions Question[]
-  exams QuestionExamUser[]
+  answers QuestionExamUserAnswer[]
+}
+
+
+model Bank {
+  id    String @id @default(cuid())
+  name  String
+  created_at DateTime @default(now())
+
+  questions Question[]
+}
+
+model Exam {
+  id    String @id @default(cuid())
+  name  String
+  created_at DateTime @default(now())
+
+  questions Question[]
+  answers QuestionExamUserAnswer[]
+
 }
 
 model Question {
@@ -49,37 +68,25 @@ model Question {
   year String
   created_at DateTime @default(now())
   user User @relation(fields: [user_id], references: [id])
-  bank QuestionBank @relation(fields: [bank_id], references: [id])
-  exam QuestionExam @relation(fields: [exam_id], references: [id])
+  bank Bank @relation(fields: [bank_id], references: [id])
+  exam Exam @relation(fields: [exam_id], references: [id])
 
   user_id String
   bank_id String
   exam_id String
+  answers QuestionExamUserAnswer[]
 }
 
-model QuestionBank {
-  id    String @id @default(cuid())
-  name  String
-  created_at DateTime @default(now())
 
-  questions Question[]
-}
-
-model QuestionExam {
-  id    String @id @default(cuid())
-  name  String
-  created_at DateTime @default(now())
-
-  questions Question[]
-  exams QuestionExamUser[]
-}
-
-model QuestionExamUser {
+model QuestionExamUserAnswer {
   id    String @id @default(cuid())
   created_at DateTime @default(now())
   user User @relation(fields: [user_id], references: [id])
-  exam QuestionExam @relation(fields: [exam_id], references: [id])
+  exam Exam @relation(fields: [exam_id], references: [id])
+  question Question @relation(fields: [question_id], references: [id])
+  answer String
 
   user_id String
   exam_id String
+  question_id String
 }

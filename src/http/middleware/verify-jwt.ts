@@ -9,6 +9,7 @@ export const verifyJwt = async (
   } catch (error) {
     reply.status(401).send({
       message: 'Unauthorized',
+      code: 'token.expired',
     })
   }
 }

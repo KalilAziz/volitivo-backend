@@ -36,7 +36,7 @@ export const authenticate = async (
 
     const refreshToken = await reply.jwtSign(
       {
-        role: user.role,
+        roles: user.role,
         permissions: user.permissions,
       },
       {
@@ -59,10 +59,8 @@ export const authenticate = async (
       .send({
         message: 'User authenticated successfully',
         token,
-        // user: {
-        //   ...user,
-        //   password_hash: undefined,
-        // },
+        roles: user.role,
+        permissions: user.permissions,
       })
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {

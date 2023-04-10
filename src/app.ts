@@ -4,8 +4,14 @@ import { ZodError } from 'zod'
 import { env } from './env'
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
-
+import cors from '@fastify/cors'
 export const app = fastify()
+
+// cors é um middleware que permite que o cliente acesse a API
+app.register(cors, {
+  origin: true,
+  credentials: true,
+})
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
@@ -16,7 +22,7 @@ app.register(fastifyJwt, {
   },
   sign: {
     // Tempo de expiração do token
-    expiresIn: '10m',
+    expiresIn: '5s',
   },
 })
 
