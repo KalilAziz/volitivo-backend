@@ -12,7 +12,7 @@ export class GenerateToken {
       env.JWT_SECRET,
       {
         subject: user.id,
-        expiresIn: '60s',
+        expiresIn: '2h',
       }
     )
 

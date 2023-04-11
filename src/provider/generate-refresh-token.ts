@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 
 export class GenerateRefreshToken {
   async execute(userId: string) {
-    const expires_in = dayjs().add(7, 'd').unix()
+    const expires_in = dayjs().add(1, 'M').unix()
 
     const alreadyExists = await prisma.refreshToken.findFirst({
       where: {

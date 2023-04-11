@@ -6,9 +6,8 @@ import fastifyCookie from '@fastify/cookie'
 import cors from '@fastify/cors'
 export const app = fastify()
 
-// cors é um middleware que permite que o cliente acesse a API
 app.register(cors, {
-  origin: true,
+  origin: '*',
   credentials: true,
 })
 

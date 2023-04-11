@@ -5,7 +5,7 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 import dayjs from 'dayjs'
 
 export const refresh = async (request: FastifyRequest, reply: FastifyReply) => {
-  const { refreshToken } = request.body
+  const { refreshToken } = request.body as { refreshToken: string }
 
   const existRefreshToken = await prisma.refreshToken.findUnique({
     where: {

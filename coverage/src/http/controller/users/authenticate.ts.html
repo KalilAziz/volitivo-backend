@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.05% </span>
+                <span class="strong">94% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>73/76</span>
+                <span class='fraction'>47/50</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.05% </span>
+                <span class="strong">94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>73/76</span>
+                <span class='fraction'>47/50</span>
             </div>
         
             
@@ -113,33 +113,10 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -162,35 +139,6 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -219,7 +167,10 @@
 import { makeAuthenticateServices } from '@/services/factories/make-authenticate-services'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-&nbsp;
+import { sign } from 'jsonwebtoken'
+import { env } from '@/env'
+import { GenerateRefreshToken } from '@/provider/generate-refresh-token'
+import { GenerateToken } from '@/provider/generate-token'
 export const authenticate = async (
   request: FastifyRequest,
   reply: FastifyReply
@@ -239,48 +190,19 @@ export const authenticate = async (
       password,
     })
 &nbsp;
-    const token = await reply.jwtSign(
-      {
-        role: user.role,
-        permissions: user.permissions,
-      },
-      {
-        sign: {
-          sub: user.id,
-        },
-      }
-    )
+    const generatetoken = new GenerateToken()
+    const token = await generatetoken.execute(user)
 &nbsp;
-    const refreshToken = await reply.jwtSign(
-      {
-        role: user.role,
-        permissions: user.permissions,
-      },
-      {
-        sign: {
-          sub: user.id,
-          // Tempo de expiração do token
-          expiresIn: '7d',
-        },
-      }
-    )
+    const generateRefreshToken = new GenerateRefreshToken()
+    const refreshToken = await (await generateRefreshToken.execute(user.id)).id
 &nbsp;
-    reply
-      .status(200)
-      .setCookie('refreshToken', refreshToken, {
-        path: '/',
-        secure: true,
-        sameSite: true,
-        httpOnly: true,
-      })
-      .send({
-        message: 'User authenticated successfully',
-        token,
-        // user: {
-        //   ...user,
-        //   password_hash: undefined,
-        // },
-      })
+    reply.status(200).send({
+      message: 'User authenticated successfully',
+      token,
+      refreshToken,
+      roles: user.roles,
+      permissions: user.permissions,
+    })
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
       return reply.status(400).send({
@@ -298,7 +220,7 @@ export const authenticate = async (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-04-09T15:08:02.417Z
+                at 2023-04-11T02:11:37.386Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
