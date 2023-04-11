@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
+enum Roles {
   ADMIN
   USER
 }
@@ -21,18 +21,29 @@ enum Permission {
   USER_DELETER
 }
 
+
 model User {
   id    String @id @default(cuid())
   name  String
   email String @unique
   password_hash String
-  role  Role   @default(USER)
-  permissions Permission[] 
+  refresh_token RefreshToken?
+  roles  Roles[] @default([USER])
+  permissions Permission[] @default([USER_VIEWER]) 
   created_at DateTime @default(now())
+
 
   questions Question[]
   answers QuestionExamUserAnswer[]
 }
+
+model RefreshToken {
+  id    String @id @default(cuid())
+  expires_in Int
+  user User @relation(fields: [user_id], references: [id])
+  user_id String @unique
+}
+
 
 
 model Bank {

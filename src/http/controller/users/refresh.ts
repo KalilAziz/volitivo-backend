@@ -1,46 +1,48 @@
+import { prisma } from '@/lib/prisma'
+import { GenerateRefreshToken } from '@/provider/generate-refresh-token'
+import { GenerateToken } from '@/provider/generate-token'
 import { FastifyRequest, FastifyReply } from 'fastify'
+import dayjs from 'dayjs'
 
 export const refresh = async (request: FastifyRequest, reply: FastifyReply) => {
-  await request.jwtVerify({
-    onlyCookie: true,
+  const { refreshToken } = request.body
+
+  const existRefreshToken = await prisma.refreshToken.findUnique({
+    where: {
+      id: refreshToken,
+    },
+    include: {
+      user: true,
+    },
   })
 
-  const token = await reply.jwtSign(
-    {
-      role: request.user.role,
-      permissions: request.user.permissions,
-    },
-    {
-      sign: {
-        sub: request.user.sub,
-      },
-    }
+  if (!existRefreshToken) {
+    return reply.status(401).send({
+      message: 'Refresh token not found',
+    })
+  }
+
+  const { user } = existRefreshToken
+
+  const generatetoken = new GenerateToken()
+  const newToken = await generatetoken.execute(user)
+
+  const refreshTokenExpired = dayjs().isAfter(
+    dayjs.unix(existRefreshToken.expires_in)
   )
 
-  const refreshToken = await reply.jwtSign(
-    {
-      role: request.user.role,
-      permissions: request.user.permissions,
-    },
-    {
-      sign: {
-        sub: request.user.sub,
-        // Tempo de expiração do token
-        expiresIn: '7d',
-      },
-    }
-  )
+  let newRefreshToken = refreshToken
 
-  reply
-    .status(200)
-    .setCookie('refreshToken', refreshToken, {
-      path: '/',
-      secure: true,
-      sameSite: true,
-      httpOnly: true,
-    })
-    .send({
-      message: 'User authenticated successfully',
-      token,
-    })
+  if (refreshTokenExpired) {
+    const generateRefreshToken = new GenerateRefreshToken()
+    const newtoken = await generateRefreshToken.execute(user.id)
+
+    newRefreshToken = newtoken.id
+  }
+
+  reply.status(200).send({
+    message: 'User authenticated successfully',
+    token: newToken,
+    refreshToken: newRefreshToken,
+  })
 }

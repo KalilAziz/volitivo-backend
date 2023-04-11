@@ -25,21 +25,20 @@ describe('Refresh Token (e2e)', () => {
       password: '123456',
     })
 
-    const cookie = authResponse.get('set-cookie')
+    // const cookie = authResponse.get('set-cookie')
 
-    const response = await Request(app.server)
-      .patch('/token/refresh')
-      .set('Cookie', cookie)
-      .send()
+    const response = await Request(app.server).post('/token/refresh').send({
+      refreshToken: authResponse.body.refreshToken,
+    })
 
     expect(response.status).toEqual(200)
     expect(response.body).toHaveProperty('token')
-    expect(response.body).toEqual({
-      message: 'User authenticated successfully',
-      token: expect.any(String),
-    })
-    expect(response.get('set-cookie')).toEqual([
-      expect.stringContaining('refreshToken='),
-    ])
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: 'User authenticated successfully',
+        token: expect.any(String),
+        refreshToken: expect.any(String),
+      })
+    )
   })
 })

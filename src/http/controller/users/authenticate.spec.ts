@@ -27,10 +27,12 @@ describe('Authenticate (e2e)', () => {
 
     expect(response.status).toEqual(200)
     expect(response.body).toHaveProperty('token')
-    expect(response.body).toEqual({
-      message: 'User authenticated successfully',
-      token: expect.any(String),
-    })
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: 'User authenticated successfully',
+        token: expect.any(String),
+      })
+    )
   })
 
   it('should not be able to authenticate with invalid credentials', async () => {

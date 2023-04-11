@@ -13,7 +13,7 @@ describe('Profile (e2e)', () => {
   })
 
   it('should be able to get user profile', async () => {
-    const { token } = await createAndAuthenticateUser(app)
+    const { token, user } = await createAndAuthenticateUser(app)
 
     const profileResponse = await request(app.server)
       .get('/me')
@@ -21,9 +21,9 @@ describe('Profile (e2e)', () => {
       .send()
 
     expect(profileResponse.status).toEqual(200)
-    expect(profileResponse.body.user).toEqual(
+    expect(profileResponse.body).toEqual(
       expect.objectContaining({
-        email: 'johnDoe@exemple.com',
+        email: user.email,
       })
     )
   })
@@ -32,8 +32,11 @@ describe('Profile (e2e)', () => {
     const profileResponse = await request(app.server).get('/me').send()
 
     expect(profileResponse.status).toEqual(401)
-    expect(profileResponse.body).toEqual({
-      message: 'Unauthorized',
-    })
+    expect(profileResponse.body).toEqual(
+      expect.objectContaining({
+        code: 'token.invalid',
+        message: 'Token not present.',
+      })
+    )
   })
 })

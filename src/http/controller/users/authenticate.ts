@@ -2,7 +2,10 @@ import { InvalidCredentialsError } from '@/services/errors/invalidCredentials'
 import { makeAuthenticateServices } from '@/services/factories/make-authenticate-services'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-
+import { sign } from 'jsonwebtoken'
+import { env } from '@/env'
+import { GenerateRefreshToken } from '@/provider/generate-refresh-token'
+import { GenerateToken } from '@/provider/generate-token'
 export const authenticate = async (
   request: FastifyRequest,
   reply: FastifyReply
@@ -22,46 +25,19 @@ export const authenticate = async (
       password,
     })
 
-    const token = await reply.jwtSign(
-      {
-        role: user.role,
-        permissions: user.permissions,
-      },
-      {
-        sign: {
-          sub: user.id,
-        },
-      }
-    )
+    const generatetoken = new GenerateToken()
+    const token = await generatetoken.execute(user)
 
-    const refreshToken = await reply.jwtSign(
-      {
-        roles: user.role,
-        permissions: user.permissions,
-      },
-      {
-        sign: {
-          sub: user.id,
-          // Tempo de expiração do token
-          expiresIn: '7d',
-        },
-      }
-    )
+    const generateRefreshToken = new GenerateRefreshToken()
+    const refreshToken = await (await generateRefreshToken.execute(user.id)).id
 
-    reply
-      .status(200)
-      .setCookie('refreshToken', refreshToken, {
-        path: '/',
-        secure: true,
-        sameSite: true,
-        httpOnly: true,
-      })
-      .send({
-        message: 'User authenticated successfully',
-        token,
-        roles: user.role,
-        permissions: user.permissions,
-      })
+    reply.status(200).send({
+      message: 'User authenticated successfully',
+      token,
+      refreshToken,
+      roles: user.roles,
+      permissions: user.permissions,
+    })
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
       return reply.status(400).send({
